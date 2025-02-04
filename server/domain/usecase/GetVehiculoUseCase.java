@@ -22,7 +22,7 @@ public class GetVehiculoUseCase implements RestInterface{
             Vehiculo vehiculo = vehiculoRepository.getVehiculoById(id);
 
             if (vehiculo != null) {
-                return "Vehículo encontrado:\n ID: " + vehiculo.getId() + ", Modelo: " + vehiculo.getModelo() + ", Cilindrada: " + vehiculo.getCilindrada();
+                return "Vehículo encontrado: ID: " + vehiculo.getId() + ", Modelo: " + vehiculo.getModelo() + ", Cilindrada: " + vehiculo.getCilindrada();
             }else{
                 return "Error, no se ha encontrado el vehículo";
             }

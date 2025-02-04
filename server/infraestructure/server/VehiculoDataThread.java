@@ -16,31 +16,32 @@ public class VehiculoDataThread extends Thread{
         this.routing = routing;
     }
 
-    @Override
     public void run() {
-        try{
-            Scanner sc = new Scanner(socket.getInputStream());
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
+        try (Scanner sc = new Scanner(socket.getInputStream());
+             PrintWriter pw = new PrintWriter(socket.getOutputStream(), true)) {
 
             while (sc.hasNextLine()) {
                 String peticion = sc.nextLine().trim();
-
+                
                 if (peticion.equalsIgnoreCase("fin")) {
                     pw.println("Conexión cerrada con el cliente.");
                     break;
                 }
-
+                
                 System.out.println("Petición recibida: " + peticion);
-
-                String respuesta = routing.procesarPerticion(peticion);
+                String respuesta = routing.procesarPeticion(peticion);
+                
+                if (respuesta == null || respuesta.isEmpty()) {
+                    respuesta = "error 400 (petición mal formada)";
+                }
+                
                 System.out.println("Respuesta enviada: " + respuesta);
                 pw.println(respuesta);
+                pw.flush();
             }
-            
-            sc.close();
-        }catch(IOException e) {
-            System.out.println("Error en el cliente; " + e.getMessage());
-        }finally{
+        } catch (IOException e) {
+            System.out.println("Error en el hilo de cliente: " + e.getMessage());
+        } finally {
             try {
                 socket.close();
             } catch (IOException e) {

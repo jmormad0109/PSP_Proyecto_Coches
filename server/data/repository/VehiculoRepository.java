@@ -15,6 +15,16 @@ public class VehiculoRepository {
     public VehiculoRepository(){
         vehiculos = new ArrayList<Vehiculo>();
         id = new AtomicInteger(0);
+
+        cargarDatos();
+    }
+
+    private void cargarDatos(){
+        addVehiculo("mercedes", 2000);
+        addVehiculo("alfa", 2200);
+        addVehiculo("audi", 2500);
+        addVehiculo("bmw", 3000);
+        addVehiculo("cupra", 1700);
     }
 
     synchronized public Vehiculo addVehiculo(String modelo, int cilindrada){
